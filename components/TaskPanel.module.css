@@ -1,0 +1,75 @@
+.panel { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.congrats {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.congrats strong { color: #5dcaa5; }
+
+.prompt {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.choiceRow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+
+.choiceBtn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s;
+}
+.choiceBtn:hover { border-color: var(--border-strong); }
+.choiceSelected {
+  background: var(--purple-bg) !important;
+  border-color: var(--purple) !important;
+}
+
+.choiceIcon { font-size: 24px; }
+.choiceLabel { font-size: 14px; font-weight: 500; color: var(--text); }
+.choiceSub { font-size: 12px; color: var(--text-muted); }
+
+.inputArea { display: flex; flex-direction: column; gap: 10px; }
+
+.textarea {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  resize: vertical;
+}
+.textarea:focus { border-color: var(--purple); outline: none; }
+
+.submitBtn {
+  align-self: flex-start;
+  padding: 10px 20px;
+  background: #3b6d11;
+  color: #d0f0a0;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+}
+.submitBtn:hover:not(:disabled) { background: var(--green); color: #fff; }
+.submitBtn:disabled { opacity: 0.4; cursor: not-allowed; }

@@ -1,0 +1,305 @@
+.stage {
+  position: fixed;
+  inset: 0;
+  background: var(--prompter-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.viewport {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.content {
+  padding: 0 12vw;
+  will-change: transform;
+}
+
+.contentWordMode {
+  transition: transform 0.12s linear;
+}
+
+.text {
+  font-size: clamp(22px, 4vw, 32px);
+  line-height: 1.85;
+  color: var(--prompter-text);
+  letter-spacing: 0.02em;
+  margin: 0;
+  padding-bottom: 50vh;
+  text-align: center;
+}
+
+.word {
+  display: inline;
+  transition: color 0.1s ease, opacity 0.1s ease;
+}
+.wordPast { opacity: 0.35; color: var(--prompter-text-muted); }
+.wordCurrent {
+  opacity: 1;
+  color: var(--prompter-text);
+  background: var(--prompter-highlight);
+  border-radius: 3px;
+}
+.wordFuture { opacity: 0.65; color: var(--prompter-text-muted); }
+
+.readLine {
+  position: absolute;
+  top: 38%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--prompter-readline);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.progressWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--prompter-overlay);
+  z-index: 10;
+}
+.progressFill {
+  height: 100%;
+  background: var(--blue);
+  transition: width 0.15s linear;
+}
+
+.sourceBadge {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  z-index: 10;
+}
+.sourceLink { color: var(--blue); }
+.sourceLink:hover { text-decoration: underline; }
+
+.controls {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+.controlBtn {
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text);
+}
+.controlBtn:hover:not(:disabled) {
+  background: var(--surface-hover);
+}
+.hint {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* Settings */
+.settingsBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.15s, box-shadow 0.15s;
+}
+.settingsBtn:hover {
+  opacity: 1;
+  box-shadow: var(--shadow-md);
+}
+
+.settingsBackdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--backdrop);
+  z-index: 30;
+}
+
+.settingsPanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 90vw);
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+
+.settingsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.settingsTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+.settingsClose {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.settingsClose:hover { background: var(--surface2); }
+
+.toggleList { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-align: left;
+  transition: all 0.15s;
+}
+.toggleRow:hover { border-color: var(--border-strong); }
+.toggleOn {
+  background: var(--blue-bg) !important;
+  border-color: var(--blue-border) !important;
+}
+
+.toggleCheck {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+.toggleOn .toggleCheck {
+  border-color: var(--blue);
+  background: var(--blue-bg);
+}
+
+.toggleText { display: flex; flex-direction: column; gap: 1px; }
+.toggleLabel { font-size: 13px; font-weight: 500; color: var(--text); }
+.toggleSub { font-size: 11px; color: var(--text-muted); }
+
+.settingsFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.settingsFooterLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.exitBtn {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 11px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.exitBtn:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.restartBtn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 11px;
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--blue);
+}
+.restartBtn:hover {
+  background: var(--surface-hover);
+}
+
+.doneBar {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  border-radius: 24px;
+  padding: 8px 8px 8px 18px;
+  font-size: 13px;
+  color: var(--text-muted);
+  z-index: 10;
+}
+.doneBtn {
+  padding: 6px 14px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.doneBtn:hover { background: var(--blue-dim); }
+
+.doneBtnSecondary {
+  padding: 6px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.doneBtnSecondary:hover { background: var(--surface-hover); }
