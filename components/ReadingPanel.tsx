@@ -2,6 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, useMemo } from 'react'
 import type { PassageData } from '@/app/page'
+import { splitIntoSentences } from '@/lib/passageUtils'
 import {
   DEFAULT_DISPLAY,
   DISPLAY_OPTS,
@@ -28,6 +29,11 @@ export default function ReadingPanel({
 }) {
   const words = useMemo(
     () => passage.chunks.join(' ').split(/\s+/).filter(Boolean),
+    [passage.chunks],
+  )
+
+  const sentences = useMemo(
+    () => splitIntoSentences(passage.chunks.join(' ')),
     [passage.chunks],
   )
 
@@ -168,6 +174,37 @@ export default function ReadingPanel({
 
   const isExternalSource = passage.source && passage.source !== 'AI Generated'
 
+  const renderWordLines = () => {
+    let wordOffset = 0
+    return sentences.map((sentence, si) => {
+      const sentenceWords = sentence.split(/\s+/).filter(Boolean)
+      const line = (
+        <p key={si} className={styles.line}>
+          {sentenceWords.map((word, wi) => {
+            const i = wordOffset + wi
+            return (
+              <span
+                key={i}
+                ref={(el) => { wordRefs.current[i] = el }}
+                className={[
+                  styles.word,
+                  i < wordIndex ? styles.wordPast : '',
+                  i === wordIndex ? styles.wordCurrent : '',
+                  i > wordIndex ? styles.wordFuture : '',
+                ].filter(Boolean).join(' ')}
+              >
+                {word}
+                {wi < sentenceWords.length - 1 ? '\u00a0' : ''}
+              </span>
+            )
+          })}
+        </p>
+      )
+      wordOffset += sentenceWords.length
+      return line
+    })
+  }
+
   return (
     <div className={styles.stage}>
       <button
@@ -253,29 +290,15 @@ export default function ReadingPanel({
           className={`${styles.content} ${wordMode ? styles.contentWordMode : ''}`}
           ref={contentRef}
         >
-          <p className={styles.text}>
+          <div className={styles.text} lang="en">
             {wordMode
-              ? words.map((word, i) => (
-                  <span
-                    key={i}
-                    ref={(el) => { wordRefs.current[i] = el }}
-                    className={[
-                      styles.word,
-                      i < wordIndex ? styles.wordPast : '',
-                      i === wordIndex ? styles.wordCurrent : '',
-                      i > wordIndex ? styles.wordFuture : '',
-                    ].filter(Boolean).join(' ')}
-                  >
-                    {word}{' '}
-                  </span>
-                ))
-              : passage.chunks.map((chunk, i) => (
-                  <span key={i}>
-                    {chunk}
-                    {i < passage.chunks.length - 1 ? ' ' : ''}
-                  </span>
+              ? renderWordLines()
+              : sentences.map((sentence, i) => (
+                  <p key={i} className={styles.line}>
+                    {sentence}
+                  </p>
                 ))}
-          </p>
+          </div>
         </div>
       </div>
 

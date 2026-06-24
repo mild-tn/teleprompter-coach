@@ -79,6 +79,14 @@ export function splitIntoChunks(text: string, chunkCount = 3): string[] {
   return chunks.slice(0, chunkCount);
 }
 
+export function splitIntoSentences(text: string): string[] {
+  return text
+    .replace(/\s+/g, " ")
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
 export function getLevelRange(level: string) {
   return LEVEL_WORD_RANGE[level as Level] ?? LEVEL_WORD_RANGE.intermediate;
 }
